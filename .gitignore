@@ -1,0 +1,9 @@
+# local tooling
+.claude/
+.vercel/
+.env*
+.DS_Store
+node_modules/
+
+# the recorded demo video is large; it is not kept in the repository
+demo/

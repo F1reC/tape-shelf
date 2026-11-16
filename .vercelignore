@@ -1,0 +1,9 @@
+.claude
+.git
+demo
+docs
+README.md
+LICENSE
+start.command
+.env*
+.DS_Store

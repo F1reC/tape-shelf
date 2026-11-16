@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>Tape art sheet (dev)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:ital,wght@0,400;0,700;1,900&family=Bebas+Neue&family=Caveat:wght@600&family=DM+Serif+Display:ital@0;1&family=Permanent+Marker&family=Playfair+Display:ital,wght@1,700&family=Press+Start+2P&family=Righteous&family=Space+Mono:wght@400;700&family=Special+Elite&family=Unbounded:wght@700&display=swap" rel="stylesheet" id="webfonts" media="print" onload="this.media='all'">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<style>
+  body { margin: 0; background: #1d1f20; color: #ccc; font: 12px/1.4 Menlo, monospace; }
+  #row { display: flex; gap: 3px; padding: 12px; align-items: flex-start; }
+  #row canvas { height: 560px; width: auto; }
+  #more { display: flex; flex-wrap: wrap; gap: 10px; padding: 12px; }
+  #more canvas { height: 300px; width: auto; }
+  #more canvas.label { height: 150px; }
+</style>
+</head>
+<body>
+<div id="row"></div>
+<div id="more"></div>
+<script type="module">
+  import { TAPES } from './src/catalog.js';
+  import { preloadFonts, drawSpine, drawCover, drawLabel, drawInlay } from './src/art.js';
+  await preloadFonts();
+  const q = new URLSearchParams(location.search);
+  const only = q.get('t');
+  const row = document.getElementById('row'), more = document.getElementById('more');
+  for (const t of TAPES) row.appendChild(drawSpine(t));
+  for (const t of TAPES) {
+    if (only && !only.split(',').includes(t.id)) continue;
+    if (!only && q.get('covers') === null) continue;
+    more.appendChild(drawCover(t));
+    const l = drawLabel(t); l.className = 'label'; more.appendChild(l);
+    if (q.get('inlay') !== null) more.appendChild(drawInlay(t));
+  }
+  window.__ready = true;
+</script>
+</body>
+</html>
